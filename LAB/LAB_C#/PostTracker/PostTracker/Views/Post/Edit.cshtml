@@ -1,0 +1,123 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model PostTracker.Controllers.PostController.ViewModel2
+
+<style>
+
+
+    h1 {
+    font-size: 4vw;
+    font-weight: bold;
+    color: black;
+    text-align: center;
+    }
+
+    label {
+    font-size: 2vw;
+    font-family: 'Times New Roman', Times, serif;
+    background-color: plum;
+    height: 3.5%;
+    width: 100%;
+    padding: 0.3vw;
+    border: 1px solid black;
+    }
+
+
+    input {
+    width: 100%;
+    margin: 0;
+    border: 1px solid black;
+    }
+
+    input[type="text"] {
+    font-size: 1vw;
+    font-family: 'Times New Roman', Times, serif;
+    }
+
+</style>
+<div class="container" style="text-align:center;">
+    <div>
+        <h1>UPDATE YOUR POST</h1>
+    </div>
+
+
+
+    <div>
+        <select disabled name="SelectedSocialNetworkEdit" class="form-select form-select-lg mb-3" aria-label="Large select example">
+            @{
+
+                foreach (var aDictionary in Model.aListOfString)
+                {
+                    if (aDictionary.ContainsKey("ID") && aDictionary["ID"] == Model.SelectedPost.IdPost.ToString())
+                    {
+                        <option selected>@aDictionary["NAME"]</option>
+                    }
+                }
+            }
+        </select>
+
+        <form asp-action="Edit" asp-controller="Post" method="post">
+            <div class="container-fluid p-0" style="background-color:black;">
+                @foreach (var aSocial in Model.aListOfString)
+                {
+                    if (aSocial.ContainsKey("ID") && aSocial["ID"] == Model.SelectedPost.IdSocialNetwork.ToString())
+                    {
+                        foreach (var aProperty in aSocial)
+                        {
+                            string aKey = char.ToUpper(aProperty.Key[0]) + aProperty.Key.Substring(1).ToLower();
+                            var aValue = Model.SelectedPost.GetType().GetProperty(aKey)?.GetValue(Model.SelectedPost, null);
+
+
+                            if (aProperty.Key == "LASTUPDATED")
+                            {
+                                <input name="@aKey" type="hidden" value="@DateTime.Today">
+
+                            }
+                            else if (aProperty.Key == "PUBLISHED")
+                            {
+                                <div class="container-fluid p-0" style="display:flex;">
+                                    <label>@aProperty.Key</label>
+                                    <input name="@aKey" type="@aProperty.Value" value="@(aValue is DateTime dt ? dt.ToString("yyyy-MM-dd") : aValue)">
+                                </div>
+
+                            }
+                            else if (aProperty.Key == "ID")
+                            {
+
+                                <input name="IdSocialNetwork" type="hidden" value="@aProperty.Value">
+                            }
+                            else if (aProperty.Key == "NAME")
+                            {
+                                <input name="IdPost" type="hidden" value="@Model.SelectedPost.IdPost">
+                            }
+                            else
+                            {
+                                
+                                <div class="container-fluid p-0" style="display:flex;">
+                                    <label>@aProperty.Key</label>
+                                    <input name="@aKey" type="@aProperty.Value" value="@(aValue is DateTime dt ? dt.ToString("yyyy-MM-dd") : aValue)" readonly>
+                
+                                </div>
+                            }
+                        }
+
+
+                    }
+                }
+            </div>
+            <br />
+            <button class="btn btn-primary" type="submit">SAVE</button>
+        </form>
+
+
+    </div>
+
+</div>
+
+
+
+
+

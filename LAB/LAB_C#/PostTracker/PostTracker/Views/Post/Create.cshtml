@@ -1,0 +1,90 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model IEnumerable<PostTracker.models.SocialNetwork>
+<style>
+
+
+    h1 {
+        font-size: 4vw;
+        font-weight: bold;
+        color: black;
+        text-align: center;
+    }
+
+    label {
+        font-size: 2vw;
+        font-family: 'Times New Roman', Times, serif;
+        background-color: plum;
+        height: 3.5%;
+        width: 100%;
+        padding: 0.3vw;
+        border: 1px solid black;
+    }
+
+
+    input {
+        width: 100%;
+        margin: 0;
+        border: 1px solid black;
+    }
+
+        input[type="text"] {
+            font-size: 1vw;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+</style>
+
+
+<div class="container" style="text-align:center;">
+    <div>
+        <h1>CREATE NEW POST</h1>
+    </div>
+
+    <div>
+
+        <form asp-action="Create" asp-controller="Post" method="post" id="SocialNetworkForm">
+            <select id="DropDownSocialMedia" name="SelectedSocialNetwork" class="form-select form-select-lg mb-3" aria-label="Large select example">
+                <option selected disabled>Choose Social Media</option>
+                @{
+
+                    foreach (var aSocial in Model)
+                    {
+                        <option value="@aSocial.IdSocialNtewok">@aSocial.NameSocialNetwork</option>
+
+                    }
+                }
+            </select>
+            <input type="Hidden" name="InputSelectedSocialNetwork" value="" id="HiddenInput">
+
+
+
+        </form>
+
+
+    </div>
+
+</div>
+
+
+<script>
+    var elementFormSocial = document.getElementById("SocialNetworkForm");
+    var elementSelect = document.getElementById("DropDownSocialMedia");
+    var elementINPUT = document.getElementById("HiddenInput");
+
+
+    
+    elementSelect.addEventListener("change", function(){
+        this.disabled = true;
+        elementINPUT.value = this.value;
+        elementFormSocial.submit();
+
+    });
+
+
+
+
+</script>

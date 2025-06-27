@@ -1,0 +1,161 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model PostTracker.Controllers.HomeController.ViewModel
+@using Newtonsoft.Json
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background: #f5f5f5;
+    }
+
+    h2 {
+        margin-top: 40px;
+        color: #333;
+    }
+
+    .cards-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        min-height: 340px;
+    }
+
+    .card {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        padding: 16px;
+        width: 300px;
+    }
+
+        .card h3 {
+            margin: 0 0 8px;
+            font-size: 1.2em;
+            color: #222;
+        }
+
+        .card p {
+            margin: 4px 0;
+            font-size: 0.9em;
+            color: #555;
+        }
+
+    .date {
+        font-weight: bold;
+        color: #007BFF;
+    }
+
+    .pagination-controls {
+        margin-top: 12px;
+    }
+
+    button {
+        padding: 6px 12px;
+        margin-right: 8px;
+        border: none;
+        background: #007BFF;
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        button:disabled {
+            background: #ccc;
+            cursor: default;
+        }
+</style>
+
+
+    <h2>Αναρτήσεις που αναρτώνται σήμερα</h2>
+    <div class="cards-container" id="posts-today"></div>
+    <div class="pagination-controls">
+        <button id="prev-today" disabled>Προηγούμενο</button>
+        <button id="next-today">Επόμενο</button>
+    </div>
+
+    <h2>Εκπρόθεσμες Αναρτήσεις</h2>
+    <div class="cards-container" id="posts-overdue"></div>
+    <div class="pagination-controls">
+        <button id="prev-overdue" disabled>Προηγούμενο</button>
+        <button id="next-overdue">Επόμενο</button>
+    </div>
+
+    <h2>Αναρτήσεις Τρέχουσας Εβδομάδας</h2>
+    <div class="cards-container" id="posts-week"></div>
+    <div class="pagination-controls">
+        <button id="prev-week" disabled>Προηγούμενο</button>
+        <button id="next-week">Επόμενο</button>
+    </div>
+    <br/>
+
+    <input value="@Model.PostsThisWeek.Count()" />
+    <div>AΡΙΘΜΟΣ ΑΝΑΡΤΗΣΕΩΝ ΕΒΔΟΜΑΔΑΣ</div>
+   
+
+
+    <script>
+
+         const postsToday = @Html.Raw(JsonConvert.SerializeObject(Model.PostsToday));
+         const postsOverdue = @Html.Raw(JsonConvert.SerializeObject(Model.PostsExpired));
+         const postsWeek = @Html.Raw(JsonConvert.SerializeObject(Model.PostsThisWeek));
+
+
+        function paginate(posts, containerId, prevBtnId, nextBtnId) {
+          const cardsPerPage = 5;
+          let currentPage = 1;
+          const totalPages = Math.ceil(posts.length / cardsPerPage);
+
+          const container = document.getElementById(containerId);
+          const btnPrev = document.getElementById(prevBtnId);
+          const btnNext = document.getElementById(nextBtnId);
+
+          function renderPage(page) {
+            container.innerHTML = '';
+            const start = (page - 1) * cardsPerPage;
+            const end = start + cardsPerPage;
+            const pagePosts = posts.slice(start, end);
+
+            pagePosts.forEach(post => {
+              const card = document.createElement('div');
+              card.className = 'card';
+              card.innerHTML = `
+                <h3>${post.Title}</h3>
+                <p><span class="date">Προγραμματισμένη:</span> ${post.Scheduled}</p>
+              `;
+              container.appendChild(card);
+            });
+
+            btnPrev.disabled = page === 1;
+            btnNext.disabled = page === totalPages;
+          }
+
+          btnPrev.addEventListener('click', () => {
+            if (currentPage > 1) {
+              currentPage--;
+              renderPage(currentPage);
+            }
+          });
+
+          btnNext.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+              currentPage++;
+              renderPage(currentPage);
+            }
+          });
+
+          renderPage(currentPage);
+        }
+
+       
+        
+    paginate(postsToday, 'posts-today', 'prev-today', 'next-today');
+    paginate(postsOverdue, 'posts-overdue', 'prev-overdue', 'next-overdue');
+    paginate(postsWeek, 'posts-week', 'prev-week', 'next-week');
+    </script>
+

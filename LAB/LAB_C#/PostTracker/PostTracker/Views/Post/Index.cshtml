@@ -1,0 +1,93 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model IEnumerable<PostTracker.models.Post> 
+<style>
+
+
+    table {
+        background-color: white;
+        border: 2px solid black;
+        width: 80%;
+        table-layout: auto;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    th {
+        border: 1px solid black;
+        text-align: center;
+    }
+
+    tr {
+        border: 1px solid black;
+        text-align: center;
+    }
+
+    a {
+        color: blueviolet;
+    }
+
+    .btn-fixed {
+        width: 120px; /* or whatever fixed width fits all your buttons */
+        text-align: center;
+    }
+
+</style>
+
+
+
+<div>
+    <div>
+        <a asp-action="Create" asp-controller="Post" class="btn btn-warning btn-sm">CREATE NEW POST</a>
+    </div>
+    <br/><br/>
+<div style="display:flex;">
+    <div>
+        <h6>POST FILTERS
+            <br /><br/>
+                <a asp-action="Index" asp-controller="Post" asp-route-id="1" class="btn btn-primary btn-sm btn-fixed">FACEBOOK</a><br /><br />
+                <a asp-action="index" asp-controller="Post" asp-route-id="2" class="btn btn-primary btn-sm btn-fixed">INSTAGRAM</a><br /><br />
+                <a asp-action="Index" asp-controller="Post" asp-route-id="3" class="btn btn-primary btn-sm btn-fixed">TIKTOK</a><br /><br />
+                <a asp-action="Index" asp-controller="Post" asp-route-id="4" class="btn btn-primary btn-sm btn-fixed">LINKEDLN</a><br /><br />
+                <a asp-action="Index" asp-controller="Post" asp-route-id="5" class="btn btn-primary btn-sm btn-fixed">NEWSLETTER</a><br /><br />
+                <a asp-action="Index" asp-controller="Post" asp-route-id="6" class="btn btn-primary btn-sm btn-fixed">BLOG</a><br /><br />
+                <form asp-action="Index" asp-controller="Post" method="post" >
+                    <input class="btn-fixed" type="text" name="SearchInput" /><br />
+                    <button type="submit" class="btn btn-warning btn-sm btn-fixed">SEARCH</button>
+
+                </form>
+                
+
+
+        </h6>
+    </div>
+    <div class="container" style="display:flex; padding:0;">
+        <div style=" width:20%;">
+               
+        </div>
+        <div style=" width:80%;">
+            <table>
+                <tr>
+                    <th>LATEST UPDATED POST</th>
+                </tr>
+
+                @foreach (var aPost in Model)
+                {
+                    <tr>
+                        <td>
+                            <a asp-action="Edit" asp-controller="Post" asp-route-id="@aPost.IdPost">@aPost.Title</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+
+    </div>
+ </div>
+
+</div>
+
+

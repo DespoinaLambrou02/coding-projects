@@ -1,0 +1,42 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model PostTracker.models.Tag
+<style>
+    
+
+    h1
+    {
+        font-size: 4vw;
+        font-weight: bold;
+        color: black;
+        text-align: center;
+    }
+
+    input[type="text"]
+    {
+        text-align:center;
+        border: 2px solid #ccc;
+        border-radius: 8px;
+        height:4vw;
+        width: 30vw;
+        
+    }
+</style>
+
+<div class="container" style="text-align:center;">
+    <div>
+        <h1>TAG: @Model.TitleTag</h1>
+    </div>
+    <div style="margin-top:12vw;">
+        <form asp-action="Edit" asp-controller="Tag" method="post">
+            <input name="newTagName" type="text" placeholder="Enter new title for the tag">
+            <br/> <br/>
+            <input name="tagID" type="hidden" value="@Model.IdTag" />
+            <button class="btn btn-primary" type="submit">SAVE</button>
+        </form>
+    </div>
+</div>

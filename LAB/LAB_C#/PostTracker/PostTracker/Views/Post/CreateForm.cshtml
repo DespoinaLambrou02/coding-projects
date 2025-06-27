@@ -1,0 +1,99 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model PostTracker.Controllers.PostController.ViewModel
+<style>
+
+
+    h1 {
+    font-size: 4vw;
+    font-weight: bold;
+    color: black;
+    text-align: center;
+    }
+
+    label {
+    font-size: 2vw;
+    font-family: 'Times New Roman', Times, serif;
+    background-color: plum;
+    height: 3.5%;
+    width: 100%;
+    padding: 0.3vw;
+    border: 1px solid black;
+    }
+
+
+    input {
+    width: 100%;
+    margin: 0;
+    border: 1px solid black;
+    }
+
+    input[type="text"] {
+    font-size: 1vw;
+    font-family: 'Times New Roman', Times, serif;
+    }
+
+</style>
+<div class="container" style="text-align:center;">
+    <div>
+        <h1>CREATE NEW POST</h1>
+    </div>
+
+    <div>
+        <select disabled class="form-select form-select-lg mb-3" aria-label="Large select example">
+            <option selected >@Model.selectedValue</option>
+        </select>
+
+
+        <form asp-action="Create" asp-controller="Post" method="post">
+            <div class="container-fluid p-0" style="background-color:black;">
+                @foreach (var aSocial in Model.aListOfString)
+                {
+                    if (aSocial.ContainsKey("NAME") && aSocial["NAME"] == Model.selectedValue)
+                    {
+                        foreach (var aProperty in aSocial)
+                        {
+
+                            if (aProperty.Key == "DATE" || aProperty.Key == "LASTUPDATED")
+                            {
+                                <input name="@(char.ToUpper(aProperty.Key[0]) + aProperty.Key.Substring(1).ToLower())" type="hidden" value="@DateTime.Today">
+
+                            }
+                            else if (aProperty.Key == "ID")
+                            {
+                                <input name="IdSocialNetwork" type="hidden" value="@aProperty.Value">
+
+                            }
+                            else if (aProperty.Key == "PUBLISHED")
+                            {
+                                <div class="container-fluid p-0" style="display:flex;">
+                                    <label>@(char.ToUpper(aProperty.Key[0]) + aProperty.Key.Substring(1).ToLower())</label>
+                                    <input name="@(char.ToUpper(aProperty.Key[0]) + aProperty.Key.Substring(1).ToLower())" type="@aProperty.Value" placeholder="Enter @aProperty.Key for the new POST">
+                                </div>
+                            }
+                            else if (aProperty.Key != "NAME")
+                            {
+                                <div class="container-fluid p-0" style="display:flex;">
+                                    <label>@(char.ToUpper(aProperty.Key[0]) + aProperty.Key.Substring(1).ToLower())</label>
+                                    <input name="@(char.ToUpper(aProperty.Key[0]) + aProperty.Key.Substring(1).ToLower())" type="@aProperty.Value" placeholder="Enter @aProperty.Key for the new POST" required>
+                                </div>
+
+                            }
+                        }
+                        
+
+                    }
+                }
+            </div>
+            <br />
+            <button class="btn btn-primary" type="submit">SAVE</button>
+        </form>
+    </div>
+
+</div>
+
+

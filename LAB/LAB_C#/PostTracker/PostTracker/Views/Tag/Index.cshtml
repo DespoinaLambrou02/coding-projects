@@ -1,0 +1,78 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model IEnumerable<PostTracker.models.Tag>
+
+<style>
+
+
+    table
+    {
+    background-color: white; 
+    border:2px solid black;
+    width: 80%;
+    table-layout:auto;
+    margin-left: auto;
+    margin-right: auto;
+    
+
+    }
+
+    th
+    {
+        border:1px solid black;
+        text-align:center;
+    }
+
+    tr
+    {
+        border:1px solid black;
+        text-align:center;
+       
+
+    }
+
+    a
+    {
+        color:blueviolet;
+
+    }
+
+</style>
+
+
+
+<div>
+    <div>
+        <h6>YOUR TAGS</h6>
+    </div>
+    <div class="container" style="display:flex; padding:0;">
+        <div style=" width:20%;">
+            <a asp-action="Create" asp-controller="Tag" class="btn btn-primary btn-sm">CREATE NEW TAG</a>
+        </div>
+        <div style=" width:80%;">
+            <table>
+                <tr>
+                    <th>CHOOSE A TAG</th>
+                </tr>
+
+                @foreach (var aTag in Model)
+                {
+                    <tr>
+                        <td>
+                            <a asp-action="Edit" asp-controller="Tag" asp-route-id="@aTag.IdTag">@aTag.TitleTag</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+       
+    </div>
+
+</div>
+
+
+
